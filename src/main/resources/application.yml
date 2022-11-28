@@ -1,0 +1,18 @@
+server:
+  port: 8080
+
+
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  datasource:
+    url: jdbc:postgresql://localhost:5432/meeting-planner
+    username: postgres
+    password: aymen #Pour securisé votre password => [HashiCorp Vault Secrets Management]
+  application:
+    name: Meeting-Planner
