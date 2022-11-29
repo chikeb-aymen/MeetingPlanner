@@ -1,27 +1,27 @@
 package com.programming.meetingplanner.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Data
+@Setter
 @NoArgsConstructor @AllArgsConstructor
 public class Reservation {
 
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter
     private Long id;
 
-    private Integer startHour;
+    @Getter
+    private LocalDateTime startDate;
 
-    private Integer endHour;
-
-    private LocalDateTime localDate;
+    @Getter
+    private LocalDateTime endDate;
 
     /**
      * Type de reservation => il peut une reunion ou un nettoyage (meme si il n'est pas une reservation)
@@ -29,6 +29,7 @@ public class Reservation {
     private String type;
 
     @ManyToOne
+    @Getter
     @JoinColumn(name="room_id")
     private Room room;
 
@@ -38,6 +39,7 @@ public class Reservation {
      */
     @ManyToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name="meeting_id")
+    @Getter(onMethod_ = @JsonIgnore)
     private Meeting meeting;
 
 

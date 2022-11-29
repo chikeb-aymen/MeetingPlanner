@@ -13,6 +13,6 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/meeting-planner
     username: postgres
-    password: aymen #Pour securisé votre password => [HashiCorp Vault Secrets Management]
+    password: aymen #Pour securisÃ© votre password => [HashiCorp Vault Secrets Management]
   application:
     name: Meeting-Planner

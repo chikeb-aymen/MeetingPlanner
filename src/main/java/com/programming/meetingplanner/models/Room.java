@@ -1,9 +1,9 @@
 package com.programming.meetingplanner.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.sql.Array;
 import java.util.ArrayList;
@@ -13,16 +13,19 @@ import java.util.Set;
 
 
 @Entity
-@Data
+@Setter
 @NoArgsConstructor @AllArgsConstructor
-public class Room {
+public class Room extends RepresentationModel<Room> {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter
     private Long id;
 
+    @Getter
     private String name;
 
-    private Integer nb_place;
+    @Getter
+    private Integer nbPlace;
 
 
     @ManyToMany(fetch = FetchType.LAZY,
@@ -34,12 +37,17 @@ public class Room {
             name = "room_equipments",
             joinColumns = @JoinColumn(name = "room_id"),
             inverseJoinColumns = @JoinColumn(name = "equipment_id"))
-    private Set<Equipment> equipments = new HashSet<>();
+    @Getter
+    private List<Equipment> equipments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "room")
+    @Getter(onMethod_ = @JsonIgnore)
+    private List<Reservation> reservations = new ArrayList<>();
 
 
     public Room(String name, Integer nb_place) {
         this.name = name;
-        this.nb_place = nb_place;
+        this.nbPlace = nb_place;
 
     }
 }

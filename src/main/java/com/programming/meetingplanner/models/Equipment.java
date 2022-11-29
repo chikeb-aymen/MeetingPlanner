@@ -3,28 +3,31 @@ package com.programming.meetingplanner.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
-@Data
+@Setter
 @AllArgsConstructor @NoArgsConstructor
 public class Equipment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter
     private Long id;
 
+    @Getter
     private String name;
 
     /**
      * Matricule => Car chaque équipement a un matricule pour distinguer que cette outils est de cette salle
      * value => la meme valeur 111
      */
+    @Getter
     private String reg_number;
 
     @ManyToMany(fetch = FetchType.LAZY,
@@ -32,8 +35,8 @@ public class Equipment {
                     CascadeType.PERSIST,
                     CascadeType.MERGE
             },mappedBy = "equipments")
-    @JsonIgnore
-    private Set<Room> room = new HashSet<>();
+    @Getter(onMethod_ = @JsonIgnore)
+    private List<Room> room = new ArrayList<>();
 
 
     @ManyToMany(fetch = FetchType.LAZY,
@@ -41,8 +44,8 @@ public class Equipment {
                     CascadeType.PERSIST,
                     CascadeType.MERGE
             },mappedBy = "equipments")
-    @JsonIgnore
-    private Set<Meeting> meeting = new HashSet<>();
+    @Getter(onMethod_ = @JsonIgnore)
+    private List<Meeting> meeting = new ArrayList<>();
 
     public Equipment(String name) {
         this.name = name;
