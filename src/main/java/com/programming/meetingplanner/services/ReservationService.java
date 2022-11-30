@@ -39,29 +39,6 @@ public class ReservationService {
 
     private MeetingMapperImpl meetingMapper;
 
-    /*
-    public List<Room> availableRooms(ReservationDTO reservationDTO) throws Exception {
-
-
-        Meeting m = meetingRepository.findMeetingByType(reservationDTO.getMeetingType());
-        if(m==null)
-            throw new EntityNotFoundException("There are no meeting with this name");
-
-
-        if(reservationRepository.existsReservationByStartDateAndEndDateAndMeetingType(
-                reservationDTO.getStartDate(),reservationDTO.getEndDate(),reservationDTO.getMeetingType())){
-
-            if(reservationDTO.getMeetingType().equals("RS")){
-                return roomRepository.findAllByNbPlaceGreaterThan(Integer.parseInt("3"));
-            }
-            else
-                return roomService.getRoomByMeetingRequirements(m.getEquipments());
-
-        }else{
-            throw new EntityNotFoundException("No room available");
-        }
-
-    }*/
 
 
 
@@ -90,14 +67,14 @@ public class ReservationService {
             throw new EntityNotFoundException("There are no meeting with this name");
 
 
-        
 
-        if(roomService.getAvailableRoomByEquipment(reservationDTO,m.getEquipments())!=null){
 
-            if(roomService.getAvailableRoomByEquipment(reservationDTO, m.getEquipments()).size() == 0)
+        if(roomService.getAvailableRoomByBookingDate(reservationDTO,m.getEquipments())!=null){
+
+            if(roomService.getAvailableRoomByBookingDate(reservationDTO, m.getEquipments()).size() == 0)
                 throw new EntityNotFoundException("There are no room in this hour");
 
-            return roomService.getAvailableRoomByEquipment(reservationDTO,m.getEquipments());
+            return roomService.getAvailableRoomByBookingDate(reservationDTO,m.getEquipments());
 
         }else{
             throw new EntityNotFoundException("No room available");

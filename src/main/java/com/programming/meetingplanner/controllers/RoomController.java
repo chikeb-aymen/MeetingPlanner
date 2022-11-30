@@ -55,4 +55,17 @@ public class RoomController {
         return new ResponseEntity<>(roomService.getRoom(name).add(selfLink,allRoomsLink),HttpStatus.OK);
     }
 
+
+    @GetMapping("/available/{type}")
+    public ResponseEntity<List<Room>> getAvailableRoomByMeetingType(@PathVariable("type") String type){
+        return new ResponseEntity<>(roomService.getAvailableRoomByMeetingType(type),HttpStatus.OK);
+    }
+
+
+    @GetMapping("/nb_place/{nbPlace}")
+    public ResponseEntity<List<Room>> getAvailableRoomByMeetingType(@PathVariable("nbPlace") Integer nbPlace){
+        return new ResponseEntity<>(roomService.findRoomByNbPlace(nbPlace),HttpStatus.OK);
+    }
+
+
 }

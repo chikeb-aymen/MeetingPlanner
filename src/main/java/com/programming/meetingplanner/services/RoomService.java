@@ -1,12 +1,11 @@
 package com.programming.meetingplanner.services;
 
 import com.programming.meetingplanner.dtos.ReservationDTO;
-import com.programming.meetingplanner.exception.DataFound;
 import com.programming.meetingplanner.exception.WrongData;
 import com.programming.meetingplanner.models.Equipment;
-import com.programming.meetingplanner.models.Reservation;
+import com.programming.meetingplanner.models.Meeting;
 import com.programming.meetingplanner.models.Room;
-import com.programming.meetingplanner.repositories.ReservationRepository;
+import com.programming.meetingplanner.repositories.MeetingRepository;
 import com.programming.meetingplanner.repositories.RoomRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
@@ -23,7 +22,7 @@ public class RoomService {
 
     private final RoomRepository roomRepository;
 
-    private final ReservationRepository reservationRepository;
+    private final MeetingRepository meetingRepository;
 
     public List<Room> getAllRooms(){
         if(roomRepository.findAll().isEmpty())
@@ -38,6 +37,72 @@ public class RoomService {
         return roomRepository.findByName(name);
     }
 
+    public List<Room> getAvailableRoomByBookingDate(ReservationDTO reservationDTO,List<Equipment> equipments){
+
+        //Get available room id
+        List<Room> rooms = roomRepository.findRoomNotBooked(reservationDTO.getStartDate(),reservationDTO.getEndDate(),reservationDTO.getNumberOfPeople());
+
+        if(reservationDTO.getMeetingType().equals("RS"))
+            return roomRepository.findRoomNotBooked(reservationDTO.getStartDate(),reservationDTO.getEndDate(),reservationDTO.getNumberOfPeople());
+
+        List<Room> meetingRooms = new ArrayList<>();
+
+        rooms.forEach(room -> {
+            if(room.getEquipments().size()!=equipments.size())
+                return;
+
+            for (int i = 0; i < room.getEquipments().size(); i++) {
+                if(!equipments.contains(room.getEquipments().get(i)))
+                    return;
+
+            }
+            meetingRooms.add(room);
+
+        });
+
+        return meetingRooms;
+    }
+
+    public List<Room> getAvailableRoomByMeetingType(String meetingType){
+
+        Meeting m = meetingRepository.findMeetingByType(meetingType);
+
+        if(m==null)
+            throw new EntityNotFoundException("There are no meeting with this name");
+
+        List<Room> rooms = roomRepository.findAll();
+
+        if(meetingType.equals("RS"))
+            return rooms;
+
+        List<Room> meetingRooms = new ArrayList<>();
+
+        rooms.forEach(room -> {
+            if(room.getEquipments().size()!=m.getEquipments().size())
+                return;
+
+            for (int i = 0; i < room.getEquipments().size(); i++) {
+                if(!m.getEquipments().contains(room.getEquipments().get(i)))
+                    return;
+
+            }
+            meetingRooms.add(room);
+
+        });
+
+        if (meetingRooms.size()==0)
+            throw new EntityNotFoundException("No room available with this type of meeting");
+
+
+        return meetingRooms;
+    }
+
+    public List<Room> findRoomByNbPlace(Integer n){
+        if(roomRepository.findAllByNbPlaceGreaterThan(n).isEmpty())
+            throw new EntityNotFoundException("No room found with this capacity of people");
+
+        return roomRepository.findAllByNbPlaceGreaterThan(n);
+    }
 
     public void checkReservationDTO(ReservationDTO reservationDTO) throws Exception {
 
@@ -62,54 +127,6 @@ public class RoomService {
                 reservationDTO.getStartDate().getSecond()!=0 || reservationDTO.getEndDate().getSecond()!=0 )
             throw new WrongData("You can't reserve with this format of time - like 9:00:00");
 
-    }
-
-    public List<Room> getRoomByMeetingRequirements(List<Equipment> equipments){
-        List<Room> rooms = roomRepository.findAll();
-
-        List<Room> meetingRooms = new ArrayList<>();
-
-        rooms.forEach(room -> {
-            if(room.getEquipments().size()!=equipments.size())
-                return;
-
-            for (int i = 0; i < room.getEquipments().size(); i++) {
-                if(!equipments.contains(room.getEquipments().get(i)))
-                    return;
-
-            }
-            meetingRooms.add(room);
-
-        });
-
-        return meetingRooms;
-    }
-
-
-    public List<Room> getAvailableRoomByEquipment(ReservationDTO reservationDTO,List<Equipment> equipments){
-
-        //Get available room id
-        List<Room> rooms = roomRepository.findRoomNotBooked(reservationDTO.getStartDate(),reservationDTO.getEndDate());
-
-        if(reservationDTO.getMeetingType().equals("RS"))
-            return roomRepository.findRoomNotBooked(reservationDTO.getStartDate(),reservationDTO.getEndDate());
-
-        List<Room> meetingRooms = new ArrayList<>();
-
-        rooms.forEach(room -> {
-            if(room.getEquipments().size()!=equipments.size())
-                return;
-
-            for (int i = 0; i < room.getEquipments().size(); i++) {
-                if(!equipments.contains(room.getEquipments().get(i)))
-                    return;
-
-            }
-            meetingRooms.add(room);
-
-        });
-
-        return meetingRooms;
     }
 
 
