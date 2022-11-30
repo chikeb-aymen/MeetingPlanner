@@ -51,9 +51,24 @@ public class ReservationService {
 
         Reservation r = meetingMapper.fromReservationDTO(reservationDTO,rooms.get(0));
 
+
+        /**
+         * Booking room 1Hour for cleaning
+         */
+        Reservation bookCleaning = meetingMapper.fromReservationDTO(reservationDTO,rooms.get(0));
+        LocalDateTime nStartDate = bookCleaning.getStartDate().plusHours(1);
+        LocalDateTime nEndDate = bookCleaning.getEndDate().plusHours(1);
+        bookCleaning.setStartDate(nStartDate);
+        bookCleaning.setEndDate(nEndDate);
+        bookCleaning.setType("Cleaning");
+
+        reservationRepository.save(bookCleaning);
+
         return reservationRepository.save(r);
 
     }
+
+
 
 
 
@@ -67,13 +82,12 @@ public class ReservationService {
             throw new EntityNotFoundException("There are no meeting with this name");
 
 
-
-
         if(roomService.getAvailableRoomByBookingDate(reservationDTO,m.getEquipments())!=null){
 
             if(roomService.getAvailableRoomByBookingDate(reservationDTO, m.getEquipments()).size() == 0)
                 throw new EntityNotFoundException("There are no room in this hour");
 
+            System.out.println("Size ...."+roomService.getAvailableRoomByBookingDate(reservationDTO,m.getEquipments()).size());
             return roomService.getAvailableRoomByBookingDate(reservationDTO,m.getEquipments());
 
         }else{

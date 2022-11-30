@@ -37,8 +37,8 @@ public class MeetingPlannerApplication implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args){
-
         /*
+
         Equipment neant = new Equipment("Neant");
         Equipment ecran = new Equipment("Ecran");
         Equipment pieuvre = new Equipment("Pieuvre");
@@ -110,11 +110,9 @@ public class MeetingPlannerApplication implements CommandLineRunner {
 
         meetingRepository.saveAll(List.of(m1,m2,m3,m4));
 
-         */
 
 
-
-
+ */
 
     }
 }

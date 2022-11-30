@@ -40,12 +40,13 @@ public class RoomService {
     public List<Room> getAvailableRoomByBookingDate(ReservationDTO reservationDTO,List<Equipment> equipments){
 
         //Get available room id
-        List<Room> rooms = roomRepository.findRoomNotBooked(reservationDTO.getStartDate(),reservationDTO.getEndDate(),reservationDTO.getNumberOfPeople());
+        List<Room> rooms = roomRepository.findRoomNotBooked(reservationDTO.getStartDate(),reservationDTO.getEndDate(),reservationDTO.getNbPlace());
 
         if(reservationDTO.getMeetingType().equals("RS"))
-            return roomRepository.findRoomNotBooked(reservationDTO.getStartDate(),reservationDTO.getEndDate(),reservationDTO.getNumberOfPeople());
+            return roomRepository.findRoomNotBooked(reservationDTO.getStartDate(),reservationDTO.getEndDate(),reservationDTO.getNbPlace());
 
         List<Room> meetingRooms = new ArrayList<>();
+
 
         rooms.forEach(room -> {
             if(room.getEquipments().size()!=equipments.size())

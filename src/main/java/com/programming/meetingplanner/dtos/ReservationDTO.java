@@ -16,6 +16,6 @@ public class ReservationDTO {
 
     private String meetingType;
 
-    private Integer numberOfPeople;
+    private int nbPlace;
 
 }
