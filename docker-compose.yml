@@ -1,0 +1,56 @@
+version: "3.7"
+
+services:
+  #DB PostgreSQL
+  postgresqldb:
+    image: postgres
+    hostname: postgresqldb
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=aymen
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=meeting-planner
+    networks:
+      - meeting-planner-network
+
+  #Service
+  meeting-service:
+    container_name: meeting-service
+    build:
+      dockerfile: Dockerfile
+    image: meeting-service-0.0.1:latest
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgresqldb:5432/meeting-planner
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: aymen
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    ports:
+      - '8080:8080'
+    depends_on:
+      - postgresqldb
+    networks:
+      - meeting-planner-network
+
+  SonarQube:
+    image: sonarqube:community
+    depends_on:
+      - postgresqldb
+    volumes:
+      - SonarQube_data:/opt/SonarQube/data
+      - SonarQube_extensions:/opt/SonarQube/extensions
+      - SonarQube_logs:/opt/SonarQube/logs
+    ports:
+      - "9000:9000"
+
+
+networks:
+  meeting-planner-network:
+    driver: bridge
+
+volumes:
+  SonarQube_data:
+  SonarQube_extensions:
+  SonarQube_logs:
+  postgresql:
+  postgresql_data:
