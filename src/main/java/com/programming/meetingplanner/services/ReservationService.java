@@ -31,7 +31,6 @@ public class ReservationService {
 
     private ReservationRepository reservationRepository;
 
-    private RoomRepository roomRepository;
 
     private RoomService roomService;
 
@@ -71,7 +70,6 @@ public class ReservationService {
 
 
 
-
     public List<Room> availableRooms(ReservationDTO reservationDTO) throws Exception {
 
         //check
@@ -97,6 +95,32 @@ public class ReservationService {
     }
 
 
+
+    public List<Reservation> getReservationsByRoom(String name){
+        if(reservationRepository.findAllByRoomName(name).size()==0)
+            throw new EntityNotFoundException("No reservation in this room");
+
+        return reservationRepository.findAllByRoomName(name);
+    }
+
+
+    public List<Reservation> getReservationsByMeetingName(String type){
+        Meeting m = meetingRepository.findMeetingByType(type);
+        if(reservationRepository.findAllByMeeting(m).size()==0)
+            throw new EntityNotFoundException("No reservation in this type of meeting");
+
+        return reservationRepository.findAllByMeeting(m);
+    }
+
+    public List<Reservation> getReservationsByThiDay(){
+        LocalDateTime startDate = LocalDateTime.now().withHour(7).withMinute(0).withSecond(0);
+        LocalDateTime endDate = LocalDateTime.now().withHour(21).withMinute(0).withSecond(0);
+
+        if(reservationRepository.findAllByStartDateAfterAndEndDateBefore(startDate,endDate).size()==0)
+            throw new EntityNotFoundException("No reservation in this day");
+
+        return reservationRepository.findAllByStartDateAfterAndEndDateBefore(startDate,endDate);
+    }
 
 
 }

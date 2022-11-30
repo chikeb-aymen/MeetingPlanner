@@ -63,9 +63,11 @@ public class RoomController {
 
 
     @GetMapping("/nb_place/{nbPlace}")
-    public ResponseEntity<List<Room>> getAvailableRoomByMeetingType(@PathVariable("nbPlace") Integer nbPlace){
+    public ResponseEntity<List<Room>> getAvailableRoomByNbPlace(@PathVariable("nbPlace") Integer nbPlace){
         return new ResponseEntity<>(roomService.findRoomByNbPlace(nbPlace),HttpStatus.OK);
     }
+
+
 
 
 }

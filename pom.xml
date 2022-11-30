@@ -9,8 +9,8 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.programming</groupId>
-    <artifactId>MeetingPlanner</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <artifactId>meeting-planner</artifactId>
+    <version>0.0.1</version>
     <name>MeetingPlanner</name>
     <description>MeetingPlanner</description>
     <properties>
@@ -67,6 +67,15 @@
                 </configuration>
             </plugin>
         </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.sonarsource.scanner.maven</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>3.4.0.905</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 
 </project>

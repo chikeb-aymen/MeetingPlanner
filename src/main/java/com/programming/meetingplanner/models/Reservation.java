@@ -42,5 +42,10 @@ public class Reservation {
     @Getter(onMethod_ = @JsonIgnore)
     private Meeting meeting;
 
-
+    public Reservation(LocalDateTime startDate, LocalDateTime endDate, String type, Room room) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.type = type;
+        this.room = room;
+    }
 }

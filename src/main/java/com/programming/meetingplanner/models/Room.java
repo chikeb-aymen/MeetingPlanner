@@ -48,6 +48,11 @@ public class Room extends RepresentationModel<Room> {
     public Room(String name, Integer nb_place) {
         this.name = name;
         this.nbPlace = nb_place;
+    }
 
+    public Room(Long id, String name, Integer nb_place) {
+        this.id = id;
+        this.name = name;
+        this.nbPlace = nb_place;
     }
 }
