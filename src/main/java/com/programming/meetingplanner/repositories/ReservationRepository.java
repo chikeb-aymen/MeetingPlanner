@@ -12,4 +12,5 @@ import java.util.List;
 public interface ReservationRepository extends JpaRepository<Reservation,Long> {
     Boolean existsReservationByStartDateAndEndDateAndMeetingType(LocalDateTime s,LocalDateTime e,String meetingType);
 
+    List<Reservation> getAllByStartDateAndEndDate(LocalDateTime s,LocalDateTime e);
 }

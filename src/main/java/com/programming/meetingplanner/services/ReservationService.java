@@ -39,10 +39,9 @@ public class ReservationService {
 
     private MeetingMapperImpl meetingMapper;
 
+    /*
     public List<Room> availableRooms(ReservationDTO reservationDTO) throws Exception {
 
-        //check
-        //roomService.checkReservationDTO(reservationDTO);
 
         Meeting m = meetingRepository.findMeetingByType(reservationDTO.getMeetingType());
         if(m==null)
@@ -62,7 +61,7 @@ public class ReservationService {
             throw new EntityNotFoundException("No room available");
         }
 
-    }
+    }*/
 
 
 
@@ -79,6 +78,32 @@ public class ReservationService {
 
     }
 
+
+
+    public List<Room> availableRooms(ReservationDTO reservationDTO) throws Exception {
+
+        //check
+        roomService.checkReservationDTO(reservationDTO);
+
+        Meeting m = meetingRepository.findMeetingByType(reservationDTO.getMeetingType());
+        if(m==null)
+            throw new EntityNotFoundException("There are no meeting with this name");
+
+
+        
+
+        if(roomService.getAvailableRoomByEquipment(reservationDTO,m.getEquipments())!=null){
+
+            if(roomService.getAvailableRoomByEquipment(reservationDTO, m.getEquipments()).size() == 0)
+                throw new EntityNotFoundException("There are no room in this hour");
+
+            return roomService.getAvailableRoomByEquipment(reservationDTO,m.getEquipments());
+
+        }else{
+            throw new EntityNotFoundException("No room available");
+        }
+
+    }
 
 
 

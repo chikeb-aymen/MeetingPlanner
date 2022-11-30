@@ -17,6 +17,8 @@ public interface RoomRepository extends JpaRepository<Room,Long> {
     List<Room> findAllByNbPlaceGreaterThan(Integer n);
 
 
+    @Query(nativeQuery =true,value="select * from Room r where r.id NOT IN (select room_id from reservation where start_date=:start_date and end_date=:end_date)")
+    List<Room> findRoomNotBooked(@Param("start_date") LocalDateTime start_date,@Param("end_date") LocalDateTime end_date);
 
     /*
         select * from room r

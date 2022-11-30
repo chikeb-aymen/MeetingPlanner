@@ -4,6 +4,7 @@ import com.programming.meetingplanner.dtos.ReservationDTO;
 import com.programming.meetingplanner.exception.DataFound;
 import com.programming.meetingplanner.exception.WrongData;
 import com.programming.meetingplanner.models.Equipment;
+import com.programming.meetingplanner.models.Reservation;
 import com.programming.meetingplanner.models.Room;
 import com.programming.meetingplanner.repositories.ReservationRepository;
 import com.programming.meetingplanner.repositories.RoomRepository;
@@ -61,10 +62,6 @@ public class RoomService {
                 reservationDTO.getStartDate().getSecond()!=0 || reservationDTO.getEndDate().getSecond()!=0 )
             throw new WrongData("You can't reserve with this format of time - like 9:00:00");
 
-
-        if(reservationRepository.existsReservationByStartDateAndEndDateAndMeetingType(reservationDTO.getStartDate(),reservationDTO.getEndDate(),reservationDTO.getMeetingType()))
-            throw new DataFound("This room is already reserved in this hour");
-
     }
 
     public List<Room> getRoomByMeetingRequirements(List<Equipment> equipments){
@@ -89,6 +86,31 @@ public class RoomService {
     }
 
 
+    public List<Room> getAvailableRoomByEquipment(ReservationDTO reservationDTO,List<Equipment> equipments){
+
+        //Get available room id
+        List<Room> rooms = roomRepository.findRoomNotBooked(reservationDTO.getStartDate(),reservationDTO.getEndDate());
+
+        if(reservationDTO.getMeetingType().equals("RS"))
+            return roomRepository.findRoomNotBooked(reservationDTO.getStartDate(),reservationDTO.getEndDate());
+
+        List<Room> meetingRooms = new ArrayList<>();
+
+        rooms.forEach(room -> {
+            if(room.getEquipments().size()!=equipments.size())
+                return;
+
+            for (int i = 0; i < room.getEquipments().size(); i++) {
+                if(!equipments.contains(room.getEquipments().get(i)))
+                    return;
+
+            }
+            meetingRooms.add(room);
+
+        });
+
+        return meetingRooms;
+    }
 
 
     private static boolean isWeekend(LocalDateTime localDate) {
