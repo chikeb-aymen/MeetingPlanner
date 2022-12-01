@@ -40,7 +40,6 @@ public class ReservationService {
 
 
 
-
     @Transactional
     public Reservation bookRoom(ReservationDTO reservationDTO) throws Exception {
         //check

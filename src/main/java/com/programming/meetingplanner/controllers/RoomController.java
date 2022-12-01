@@ -13,22 +13,22 @@ import java.util.List;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+/**
+ * ROOM API
+ */
 @RestController
 @RequestMapping("/api/v1/room")
 @AllArgsConstructor
 public class RoomController {
 
 
-    /**
-     * TODO
-     * Exception
-     * Logging
-     * Constraint
-     * Documentation
-     */
     private RoomService roomService;
 
 
+    /**
+     * Get all rooms
+     * @return List of room
+     */
     @GetMapping
     public ResponseEntity<List<Room>> getAllRooms(){
 
@@ -47,6 +47,11 @@ public class RoomController {
     }
 
 
+    /**
+     * Get room details by name
+     * @param name
+     * @return Room
+     */
     @GetMapping("/{name}")
     public ResponseEntity<Room> getRoomDetail(@PathVariable("name") String name){
         Link allRoomsLink = linkTo(methodOn(RoomController.class).getAllRooms()).withRel("allRooms");
@@ -56,12 +61,22 @@ public class RoomController {
     }
 
 
+    /**
+     * Get available room for booking by meeting type
+     * @param type
+     * @return List of rooms
+     */
     @GetMapping("/available/{type}")
     public ResponseEntity<List<Room>> getAvailableRoomByMeetingType(@PathVariable("type") String type){
         return new ResponseEntity<>(roomService.getAvailableRoomByMeetingType(type),HttpStatus.OK);
     }
 
 
+    /**
+     * Get Available room by nb of people (place)
+     * @param nbPlace
+     * @return List of room
+     */
     @GetMapping("/nb_place/{nbPlace}")
     public ResponseEntity<List<Room>> getAvailableRoomByNbPlace(@PathVariable("nbPlace") Integer nbPlace){
         return new ResponseEntity<>(roomService.findRoomByNbPlace(nbPlace),HttpStatus.OK);
