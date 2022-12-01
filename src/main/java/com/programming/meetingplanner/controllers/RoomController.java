@@ -3,7 +3,6 @@ package com.programming.meetingplanner.controllers;
 import com.programming.meetingplanner.models.Room;
 import com.programming.meetingplanner.services.RoomService;
 import lombok.AllArgsConstructor;
-import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +27,7 @@ public class RoomController {
      * Documentation
      */
     private RoomService roomService;
+
 
     @GetMapping
     public ResponseEntity<List<Room>> getAllRooms(){
