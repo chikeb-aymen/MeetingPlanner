@@ -1,7 +1,7 @@
 [![Level](https://img.shields.io/badge/Level-Educational-green.svg?style=flat-square)](#contributors-)
 
 <h1 align="center">
-  <img src="https://cdn-images-1.medium.com/max/724/1*hKyTVR9bPKqgurtmgPcnFg@2x.png" style="width:200px;"/>
+  <!--<img src="https://cdn-images-1.medium.com/max/724/1*hKyTVR9bPKqgurtmgPcnFg@2x.png" style="width:200px;"/>-->
     <br>
   <a href="https://github.com/a-chikeb/Quiz_AndroidApp">
     Meeting Planner
