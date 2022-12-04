@@ -36,4 +36,6 @@ public interface RoomRepository extends JpaRepository<Room,Long> {
             rq.equipment_id = e.id where e."name" = 'Pieuvre'
         )
      */
+
+    boolean deleteByName(String n);
 }

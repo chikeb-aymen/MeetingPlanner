@@ -28,7 +28,7 @@ public class Room extends RepresentationModel<Room> {
     private Integer nbPlace;
 
 
-    @ManyToMany(fetch = FetchType.LAZY,
+    @ManyToMany(fetch = FetchType.EAGER,
             cascade = {
                     CascadeType.PERSIST,
                     CascadeType.MERGE
